@@ -1,0 +1,20 @@
+
+AWS Instance Details
+
+http://ec2-54-201-110-54.us-west-2.compute.amazonaws.com
+public IP 54.201.110.54
+
+
+ssh command line
+
+ssh ubuntu@ec2-54-201-110-54.us-west-2.compute.amazonaws.com  -i  Pem File
+
+
+Install node for web server
+
+this is will be good for authentication
+
+
+To launch node server
+
+sudo node 
