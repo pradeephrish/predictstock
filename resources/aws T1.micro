@@ -17,4 +17,16 @@ this is will be good for authentication
 
 To launch node server
 
-sudo node 
+sudo node node-server.js
+
+added security rule on 80
+
+Visit Server at
+
+Listening for stockweets URL token on 8080
+http://54.201.110.54:8080
+or
+http://ec2-54-201-110-54.us-west-2.compute.amazonaws.com:80
+
+to handle the request
+ 

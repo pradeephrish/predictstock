@@ -2,7 +2,9 @@ StockWeets
 
 Authorization / Oauth link
 
-curl -X GET -u pradeepchaudhari -p https://api.stocktwits.com/api/2/oauth/authorize -d 'client_id=e87f14605e93fc26&response_type=token&redirect_uri=http://www.whatnextplus.com&scope=read,watch_lists,publish_messages,publish_watch_lists,follow_users,follow_stocks'
+curl -X GET -u pradeepchaudhari -p https://api.stocktwits.com/api/2/oauth/authorize -d 'client_id=e87f14605e93fc26&response_type=code&redirect_uri=http://ec2-54-201-110-54.us-west-2.compute.amazonaws.com&scope=read,watch_lists,publish_messages,publish_watch_lists,follow_users,follow_stocks'
+
+Above one opens authentication page
 
 
 Secret Authorization Details 
@@ -22,3 +24,14 @@ Authorize URL: https://api.stocktwits.com/api/2/oauth/authorize
 
 DeAuthorization URL: None
 
+***********
+
+https://api.stocktwits.com/api/2/oauth/authorize?client_id=e87f14605e93fc26&response_type=code&redirect_uri=http://ec2-54-201-110-54.us-west-2.compute.amazonaws.com&scope=read,watch_lists,publish_messages,publish_watch_lists,direct_messages,follow_users,follow_stocks
+This one redirect to amazon ec1 instance ( nlp deployed there )
+
+Got token using node.js script
+
+--> Got following token for pradeep user
+--> c89233613b4fb63b0e51d8bf6bc62a652154ad5a
+
+Shit, It only returns top 30 results and it don't even require authentication, anyways good learning.
