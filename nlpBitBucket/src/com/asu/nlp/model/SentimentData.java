@@ -8,6 +8,12 @@ public class SentimentData{
 		this.timestamp = timestamp;
 		this.stock = stock;
 	}
+		
+		public String toString() {
+			return stock+" "+timestamp+" bullish:"+bullish+" "+"bearish:"+bearish;
+		}
+		
+		
 		String bullish;
 		public String getBullish() {
 			return bullish;

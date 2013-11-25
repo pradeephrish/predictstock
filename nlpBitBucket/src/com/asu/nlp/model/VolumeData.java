@@ -8,6 +8,12 @@ public class VolumeData{
 			this.volume_change = volume_change;
 			this.stockSymbol=stockSymbol;
 		}
+		
+		
+		public String toString() {
+			return stockSymbol+" "+timestamp+" volume_score:"+volume_score+" volume_change:"+volume_change;
+		}
+		
 		String timestamp;
 		private String stockSymbol;
 		public String getTimestamp() {

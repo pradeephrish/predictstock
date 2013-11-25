@@ -11,7 +11,6 @@ import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.MasonTagTypes;
 import net.htmlparser.jericho.MicrosoftTagTypes;
-import net.htmlparser.jericho.Segment;
 import net.htmlparser.jericho.Source;
 
 import org.apache.commons.io.FileUtils;
