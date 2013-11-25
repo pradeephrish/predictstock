@@ -1,6 +1,6 @@
 package com.asu.nlp;
 
-import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -14,12 +14,13 @@ import net.htmlparser.jericho.MicrosoftTagTypes;
 import net.htmlparser.jericho.Segment;
 import net.htmlparser.jericho.Source;
 
+import org.apache.commons.io.FileUtils;
+
 import com.asu.nlp.model.SentimentData;
 import com.asu.nlp.model.VolumeData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class GrabStockData {
@@ -27,25 +28,53 @@ public class GrabStockData {
 	public static GsonBuilder gsonBuilder = new GsonBuilder(); 
 	public static Gson gson = gsonBuilder.create(); 
 	
+	public void init(String[] urls,String[] stocks){
+		for (int i = 0; i < urls.length; i++) {
+			try {
+				String stock = urls[i].substring(urls[i].lastIndexOf("/")+1,urls[i].lastIndexOf("?"));
+				String data = this.getStringSource(urls[i]);
+				this.processData(data, stock);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		System.out.println("Data Stored in JSON Object Store");
+	}
+	
 	public static void main(String[] args) throws IOException {
 		GrabStockData grabStockData = new GrabStockData();
-//		String data = grabStockData.getStringSource("http://stocktwits.com/symbol/GOOG?q=goog");
-//		grabStockData.processData(data);
 		
-		
-	//	String volData= "var vol_data = [{\"timestamp\":\"2013-11-25\",\"volume_score\":838.0,\"volume_change\":-0.36},{\"timestamp\":\"2013-11-24\",\"volume_score\":841.0,\"volume_change\":-1.29},{\"timestamp\":\"2013-11-23\",\"volume_score\":852.0,\"volume_change\":-2.74},{\"timestamp\":\"2013-11-22\",\"volume_score\":876.0,\"volume_change\":-5.6},{\"timestamp\":\"2013-11-21\",\"volume_score\":928.0,\"volume_change\":-6.92},{\"timestamp\":\"2013-11-20\",\"volume_score\":997.0,\"volume_change\":-0.89},{\"timestamp\":\"2013-11-19\",\"volume_score\":1006.0,\"volume_change\":9.47},{\"timestamp\":\"2013-11-18\",\"volume_score\":919.0,\"volume_change\":1.55},{\"timestamp\":\"2013-11-17\",\"volume_score\":905.0,\"volume_change\":0.89},{\"timestamp\":\"2013-11-16\",\"volume_score\":897.0,\"volume_change\":7.3},{\"timestamp\":\"2013-11-15\",\"volume_score\":836.0,\"volume_change\":0.84},{\"timestamp\":\"2013-11-14\",\"volume_score\":829.0,\"volume_change\":7.11},{\"timestamp\":\"2013-11-13\",\"volume_score\":774.0,\"volume_change\":-0.39},{\"timestamp\":\"2013-11-12\",\"volume_score\":777.0,\"volume_change\":1.44},{\"timestamp\":\"2013-11-11\",\"volume_score\":766.0,\"volume_change\":0.0},{\"timestamp\":\"2013-11-10\",\"volume_score\":766.0,\"volume_change\":-1.16},{\"timestamp\":\"2013-11-09\",\"volume_score\":775.0,\"volume_change\":-7.85},{\"timestamp\":\"2013-11-08\",\"volume_score\":841.0,\"volume_change\":-9.08},{\"timestamp\":\"2013-11-07\",\"volume_score\":925.0,\"volume_change\":-2.12},{\"timestamp\":\"2013-11-06\",\"volume_score\":945.0,\"volume_change\":-17.61},{\"timestamp\":\"2013-11-05\",\"volume_score\":1147.0,\"volume_change\":-6.9},{\"timestamp\":\"2013-11-04\",\"volume_score\":1232.0,\"volume_change\":-1.36},{\"timestamp\":\"2013-11-03\",\"volume_score\":1249.0,\"volume_change\":-1.03},{\"timestamp\":\"2013-11-02\",\"volume_score\":1262.0,\"volume_change\":-4.97},{\"timestamp\":\"2013-11-01\",\"volume_score\":1328.0,\"volume_change\":-4.87},{\"timestamp\":\"2013-10-31\",\"volume_score\":1396.0,\"volume_change\":-19.21},{\"timestamp\":\"2013-10-30\",\"volume_score\":1728.0,\"volume_change\":6.08},{\"timestamp\":\"2013-10-29\",\"volume_score\":1629.0,\"volume_change\":-15.02},{\"timestamp\":\"2013-10-28\",\"volume_score\":1917.0,\"volume_change\":-5.47},{\"timestamp\":\"2013-10-27\",\"volume_score\":2028.0,\"volume_change\":-5.89},{\"timestamp\":\"2013-10-26\",\"volume_score\":2155.0,\"volume_change\":-41.26},{\"timestamp\":\"2013-10-25\",\"volume_score\":3669.0,\"volume_change\":-16.12},{\"timestamp\":\"2013-10-24\",\"volume_score\":4374.0,\"volume_change\":9.19},{\"timestamp\":\"2013-10-23\",\"volume_score\":4006.0,\"volume_change\":4.02},{\"timestamp\":\"2013-10-22\",\"volume_score\":3851.0,\"volume_change\":11.75},{\"timestamp\":\"2013-10-21\",\"volume_score\":3446.0,\"volume_change\":3.67},{\"timestamp\":\"2013-10-20\",\"volume_score\":3324.0,\"volume_change\":4.4},{\"timestamp\":\"2013-10-19\",\"volume_score\":3184.0,\"volume_change\":106.62},{\"timestamp\":\"2013-10-18\",\"volume_score\":1541.0,\"volume_change\":136.35},{\"timestamp\":\"2013-10-17\",\"volume_score\":652.0,\"volume_change\":-7.52},{\"timestamp\":\"2013-10-16\",\"volume_score\":705.0,\"volume_change\":-14.02},{\"timestamp\":\"2013-10-15\",\"volume_score\":820.0,\"volume_change\":-3.64},{\"timestamp\":\"2013-10-14\",\"volume_score\":851.0,\"volume_change\":-0.58},{\"timestamp\":\"2013-10-13\",\"volume_score\":856.0,\"volume_change\":-0.12},{\"timestamp\":\"2013-10-12\",\"volume_score\":857.0,\"volume_change\":1.06},{\"timestamp\":\"2013-10-11\",\"volume_score\":848.0,\"volume_change\":2.66},{\"timestamp\":\"2013-10-10\",\"volume_score\":826.0,\"volume_change\":15.36},{\"timestamp\":\"2013-10-09\",\"volume_score\":716.0,\"volume_change\":12.76},{\"timestamp\":\"2013-10-08\",\"volume_score\":635.0,\"volume_change\":1.76},{\"timestamp\":\"2013-10-07\",\"volume_score\":624.0,\"volume_change\":4.7},{\"timestamp\":\"2013-10-06\",\"volume_score\":596.0,\"volume_change\":-0.33},{\"timestamp\":\"2013-10-05\",\"volume_score\":598.0,\"volume_change\":-1.16},{\"timestamp\":\"2013-10-04\",\"volume_score\":605.0,\"volume_change\":-0.17},{\"timestamp\":\"2013-10-03\",\"volume_score\":606.0,\"volume_change\":-1.3},{\"timestamp\":\"2013-10-02\",\"volume_score\":614.0,\"volume_change\":2.33},{\"timestamp\":\"2013-10-01\",\"volume_score\":600.0,\"volume_change\":-6.83},{\"timestamp\":\"2013-09-30\",\"volume_score\":644.0,\"volume_change\":-3.88},{\"timestamp\":\"2013-09-29\",\"volume_score\":670.0,\"volume_change\":-0.89},{\"timestamp\":\"2013-09-28\",\"volume_score\":676.0,\"volume_change\":-3.84},{\"timestamp\":\"2013-09-27\",\"volume_score\":703.0,\"volume_change\":-5.26},{\"timestamp\":\"2013-09-26\",\"volume_score\":742.0,\"volume_change\":-10.28}]";
-		String jsonString = "[{\"timestamp\":\"2013-11-25\",\"volume_score\":838.0,\"volume_change\":-0.36},{\"timestamp\":\"2013-11-24\",\"volume_score\":841.0,\"volume_change\":-1.29},{\"timestamp\":\"2013-11-23\",\"volume_score\":852.0,\"volume_change\":-2.74},{\"timestamp\":\"2013-11-22\",\"volume_score\":876.0,\"volume_change\":-5.6},{\"timestamp\":\"2013-11-21\",\"volume_score\":928.0,\"volume_change\":-6.92},{\"timestamp\":\"2013-11-20\",\"volume_score\":997.0,\"volume_change\":-0.89},{\"timestamp\":\"2013-11-19\",\"volume_score\":1006.0,\"volume_change\":9.47},{\"timestamp\":\"2013-11-18\",\"volume_score\":919.0,\"volume_change\":1.55},{\"timestamp\":\"2013-11-17\",\"volume_score\":905.0,\"volume_change\":0.89},{\"timestamp\":\"2013-11-16\",\"volume_score\":897.0,\"volume_change\":7.3},{\"timestamp\":\"2013-11-15\",\"volume_score\":836.0,\"volume_change\":0.84},{\"timestamp\":\"2013-11-14\",\"volume_score\":829.0,\"volume_change\":7.11},{\"timestamp\":\"2013-11-13\",\"volume_score\":774.0,\"volume_change\":-0.39},{\"timestamp\":\"2013-11-12\",\"volume_score\":777.0,\"volume_change\":1.44},{\"timestamp\":\"2013-11-11\",\"volume_score\":766.0,\"volume_change\":0.0},{\"timestamp\":\"2013-11-10\",\"volume_score\":766.0,\"volume_change\":-1.16},{\"timestamp\":\"2013-11-09\",\"volume_score\":775.0,\"volume_change\":-7.85},{\"timestamp\":\"2013-11-08\",\"volume_score\":841.0,\"volume_change\":-9.08},{\"timestamp\":\"2013-11-07\",\"volume_score\":925.0,\"volume_change\":-2.12},{\"timestamp\":\"2013-11-06\",\"volume_score\":945.0,\"volume_change\":-17.61},{\"timestamp\":\"2013-11-05\",\"volume_score\":1147.0,\"volume_change\":-6.9},{\"timestamp\":\"2013-11-04\",\"volume_score\":1232.0,\"volume_change\":-1.36},{\"timestamp\":\"2013-11-03\",\"volume_score\":1249.0,\"volume_change\":-1.03},{\"timestamp\":\"2013-11-02\",\"volume_score\":1262.0,\"volume_change\":-4.97},{\"timestamp\":\"2013-11-01\",\"volume_score\":1328.0,\"volume_change\":-4.87},{\"timestamp\":\"2013-10-31\",\"volume_score\":1396.0,\"volume_change\":-19.21},{\"timestamp\":\"2013-10-30\",\"volume_score\":1728.0,\"volume_change\":6.08},{\"timestamp\":\"2013-10-29\",\"volume_score\":1629.0,\"volume_change\":-15.02},{\"timestamp\":\"2013-10-28\",\"volume_score\":1917.0,\"volume_change\":-5.47},{\"timestamp\":\"2013-10-27\",\"volume_score\":2028.0,\"volume_change\":-5.89},{\"timestamp\":\"2013-10-26\",\"volume_score\":2155.0,\"volume_change\":-41.26},{\"timestamp\":\"2013-10-25\",\"volume_score\":3669.0,\"volume_change\":-16.12},{\"timestamp\":\"2013-10-24\",\"volume_score\":4374.0,\"volume_change\":9.19},{\"timestamp\":\"2013-10-23\",\"volume_score\":4006.0,\"volume_change\":4.02},{\"timestamp\":\"2013-10-22\",\"volume_score\":3851.0,\"volume_change\":11.75},{\"timestamp\":\"2013-10-21\",\"volume_score\":3446.0,\"volume_change\":3.67},{\"timestamp\":\"2013-10-20\",\"volume_score\":3324.0,\"volume_change\":4.4},{\"timestamp\":\"2013-10-19\",\"volume_score\":3184.0,\"volume_change\":106.62},{\"timestamp\":\"2013-10-18\",\"volume_score\":1541.0,\"volume_change\":136.35},{\"timestamp\":\"2013-10-17\",\"volume_score\":652.0,\"volume_change\":-7.52},{\"timestamp\":\"2013-10-16\",\"volume_score\":705.0,\"volume_change\":-14.02},{\"timestamp\":\"2013-10-15\",\"volume_score\":820.0,\"volume_change\":-3.64},{\"timestamp\":\"2013-10-14\",\"volume_score\":851.0,\"volume_change\":-0.58},{\"timestamp\":\"2013-10-13\",\"volume_score\":856.0,\"volume_change\":-0.12},{\"timestamp\":\"2013-10-12\",\"volume_score\":857.0,\"volume_change\":1.06},{\"timestamp\":\"2013-10-11\",\"volume_score\":848.0,\"volume_change\":2.66},{\"timestamp\":\"2013-10-10\",\"volume_score\":826.0,\"volume_change\":15.36},{\"timestamp\":\"2013-10-09\",\"volume_score\":716.0,\"volume_change\":12.76},{\"timestamp\":\"2013-10-08\",\"volume_score\":635.0,\"volume_change\":1.76},{\"timestamp\":\"2013-10-07\",\"volume_score\":624.0,\"volume_change\":4.7},{\"timestamp\":\"2013-10-06\",\"volume_score\":596.0,\"volume_change\":-0.33},{\"timestamp\":\"2013-10-05\",\"volume_score\":598.0,\"volume_change\":-1.16},{\"timestamp\":\"2013-10-04\",\"volume_score\":605.0,\"volume_change\":-0.17},{\"timestamp\":\"2013-10-03\",\"volume_score\":606.0,\"volume_change\":-1.3},{\"timestamp\":\"2013-10-02\",\"volume_score\":614.0,\"volume_change\":2.33},{\"timestamp\":\"2013-10-01\",\"volume_score\":600.0,\"volume_change\":-6.83},{\"timestamp\":\"2013-09-30\",\"volume_score\":644.0,\"volume_change\":-3.88},{\"timestamp\":\"2013-09-29\",\"volume_score\":670.0,\"volume_change\":-0.89},{\"timestamp\":\"2013-09-28\",\"volume_score\":676.0,\"volume_change\":-3.84},{\"timestamp\":\"2013-09-27\",\"volume_score\":703.0,\"volume_change\":-5.26},{\"timestamp\":\"2013-09-26\",\"volume_score\":742.0,\"volume_change\":-10.28}]";
-//		String sentimentData ="var sentiment_data = [{\"bullish\":78.67,\"bearish\":21.33,\"timestamp\":\"2013-11-24\"},{\"bullish\":77.24,\"bearish\":22.76,\"timestamp\":\"2013-11-23\"},{\"bullish\":75.29,\"bearish\":24.71,\"timestamp\":\"2013-11-22\"},{\"bullish\":73.2,\"bearish\":26.8,\"timestamp\":\"2013-11-21\"},{\"bullish\":77.53,\"bearish\":22.47,\"timestamp\":\"2013-11-20\"},{\"bullish\":82.79,\"bearish\":17.21,\"timestamp\":\"2013-11-19\"},{\"bullish\":83.08,\"bearish\":16.92,\"timestamp\":\"2013-11-18\"},{\"bullish\":81.29,\"bearish\":18.71,\"timestamp\":\"2013-11-17\"},{\"bullish\":80.7,\"bearish\":19.3,\"timestamp\":\"2013-11-16\"},{\"bullish\":78.06,\"bearish\":21.94,\"timestamp\":\"2013-11-15\"},{\"bullish\":75.92,\"bearish\":24.08,\"timestamp\":\"2013-11-14\"},{\"bullish\":75.13,\"bearish\":24.87,\"timestamp\":\"2013-11-13\"},{\"bullish\":68.64,\"bearish\":31.36,\"timestamp\":\"2013-11-12\"},{\"bullish\":66.87,\"bearish\":33.13,\"timestamp\":\"2013-11-11\"},{\"bullish\":66.21,\"bearish\":33.79,\"timestamp\":\"2013-11-10\"},{\"bullish\":67.57,\"bearish\":32.43,\"timestamp\":\"2013-11-09\"},{\"bullish\":68.6,\"bearish\":31.4,\"timestamp\":\"2013-11-08\"},{\"bullish\":74.87,\"bearish\":25.13,\"timestamp\":\"2013-11-07\"},{\"bullish\":78.35,\"bearish\":21.65,\"timestamp\":\"2013-11-06\"},{\"bullish\":83.55,\"bearish\":16.45,\"timestamp\":\"2013-11-05\"},{\"bullish\":83.33,\"bearish\":16.67,\"timestamp\":\"2013-11-04\"},{\"bullish\":83.56,\"bearish\":16.44,\"timestamp\":\"2013-11-03\"},{\"bullish\":84.51,\"bearish\":15.49,\"timestamp\":\"2013-11-03\"},{\"bullish\":80.74,\"bearish\":19.26,\"timestamp\":\"2013-11-02\"},{\"bullish\":80.76,\"bearish\":19.24,\"timestamp\":\"2013-11-01\"},{\"bullish\":83.97,\"bearish\":16.03,\"timestamp\":\"2013-10-31\"},{\"bullish\":83.15,\"bearish\":16.85,\"timestamp\":\"2013-10-30\"},{\"bullish\":79.29,\"bearish\":20.71,\"timestamp\":\"2013-10-29\"},{\"bullish\":80.61,\"bearish\":19.39,\"timestamp\":\"2013-10-28\"},{\"bullish\":80.52,\"bearish\":19.48,\"timestamp\":\"2013-10-27\"},{\"bullish\":85.67,\"bearish\":14.33,\"timestamp\":\"2013-10-26\"},{\"bullish\":86.35,\"bearish\":13.65,\"timestamp\":\"2013-10-25\"},{\"bullish\":86.51,\"bearish\":13.49,\"timestamp\":\"2013-10-24\"},{\"bullish\":84.87,\"bearish\":15.13,\"timestamp\":\"2013-10-23\"},{\"bullish\":85.63,\"bearish\":14.37,\"timestamp\":\"2013-10-22\"},{\"bullish\":87.46,\"bearish\":12.54,\"timestamp\":\"2013-10-21\"},{\"bullish\":86.62,\"bearish\":13.38,\"timestamp\":\"2013-10-20\"},{\"bullish\":86.8,\"bearish\":13.2,\"timestamp\":\"2013-10-19\"},{\"bullish\":78.97,\"bearish\":21.03,\"timestamp\":\"2013-10-18\"},{\"bullish\":65.29,\"bearish\":34.71,\"timestamp\":\"2013-10-17\"},{\"bullish\":57.14,\"bearish\":42.86,\"timestamp\":\"2013-10-16\"},{\"bullish\":59.69,\"bearish\":40.31,\"timestamp\":\"2013-10-15\"},{\"bullish\":59.2,\"bearish\":40.8,\"timestamp\":\"2013-10-14\"},{\"bullish\":61.07,\"bearish\":38.93,\"timestamp\":\"2013-10-13\"},{\"bullish\":64.83,\"bearish\":35.17,\"timestamp\":\"2013-10-12\"},{\"bullish\":64.58,\"bearish\":35.42,\"timestamp\":\"2013-10-11\"},{\"bullish\":66.23,\"bearish\":33.77,\"timestamp\":\"2013-10-10\"},{\"bullish\":74.29,\"bearish\":25.71,\"timestamp\":\"2013-10-09\"},{\"bullish\":81.56,\"bearish\":18.44,\"timestamp\":\"2013-10-08\"},{\"bullish\":81.74,\"bearish\":18.26,\"timestamp\":\"2013-10-07\"},{\"bullish\":81.36,\"bearish\":18.64,\"timestamp\":\"2013-10-06\"},{\"bullish\":77.6,\"bearish\":22.4,\"timestamp\":\"2013-10-05\"},{\"bullish\":77.27,\"bearish\":22.73,\"timestamp\":\"2013-10-04\"},{\"bullish\":74.83,\"bearish\":25.17,\"timestamp\":\"2013-10-03\"},{\"bullish\":71.22,\"bearish\":28.78,\"timestamp\":\"2013-10-02\"},{\"bullish\":66.2,\"bearish\":33.8,\"timestamp\":\"2013-10-01\"},{\"bullish\":63.78,\"bearish\":36.22,\"timestamp\":\"2013-09-30\"},{\"bullish\":67.18,\"bearish\":32.82,\"timestamp\":\"2013-09-29\"},{\"bullish\":67.14,\"bearish\":32.86,\"timestamp\":\"2013-09-28\"},{\"bullish\":70.2,\"bearish\":29.8,\"timestamp\":\"2013-09-27\"},{\"bullish\":75.15,\"bearish\":24.85,\"timestamp\":\"2013-09-26\"}];";
-		String sentimentString ="[{\"bullish\":78.67,\"bearish\":21.33,\"timestamp\":\"2013-11-24\"},{\"bullish\":77.24,\"bearish\":22.76,\"timestamp\":\"2013-11-23\"},{\"bullish\":75.29,\"bearish\":24.71,\"timestamp\":\"2013-11-22\"},{\"bullish\":73.2,\"bearish\":26.8,\"timestamp\":\"2013-11-21\"},{\"bullish\":77.53,\"bearish\":22.47,\"timestamp\":\"2013-11-20\"},{\"bullish\":82.79,\"bearish\":17.21,\"timestamp\":\"2013-11-19\"},{\"bullish\":83.08,\"bearish\":16.92,\"timestamp\":\"2013-11-18\"},{\"bullish\":81.29,\"bearish\":18.71,\"timestamp\":\"2013-11-17\"},{\"bullish\":80.7,\"bearish\":19.3,\"timestamp\":\"2013-11-16\"},{\"bullish\":78.06,\"bearish\":21.94,\"timestamp\":\"2013-11-15\"},{\"bullish\":75.92,\"bearish\":24.08,\"timestamp\":\"2013-11-14\"},{\"bullish\":75.13,\"bearish\":24.87,\"timestamp\":\"2013-11-13\"},{\"bullish\":68.64,\"bearish\":31.36,\"timestamp\":\"2013-11-12\"},{\"bullish\":66.87,\"bearish\":33.13,\"timestamp\":\"2013-11-11\"},{\"bullish\":66.21,\"bearish\":33.79,\"timestamp\":\"2013-11-10\"},{\"bullish\":67.57,\"bearish\":32.43,\"timestamp\":\"2013-11-09\"},{\"bullish\":68.6,\"bearish\":31.4,\"timestamp\":\"2013-11-08\"},{\"bullish\":74.87,\"bearish\":25.13,\"timestamp\":\"2013-11-07\"},{\"bullish\":78.35,\"bearish\":21.65,\"timestamp\":\"2013-11-06\"},{\"bullish\":83.55,\"bearish\":16.45,\"timestamp\":\"2013-11-05\"},{\"bullish\":83.33,\"bearish\":16.67,\"timestamp\":\"2013-11-04\"},{\"bullish\":83.56,\"bearish\":16.44,\"timestamp\":\"2013-11-03\"},{\"bullish\":84.51,\"bearish\":15.49,\"timestamp\":\"2013-11-03\"},{\"bullish\":80.74,\"bearish\":19.26,\"timestamp\":\"2013-11-02\"},{\"bullish\":80.76,\"bearish\":19.24,\"timestamp\":\"2013-11-01\"},{\"bullish\":83.97,\"bearish\":16.03,\"timestamp\":\"2013-10-31\"},{\"bullish\":83.15,\"bearish\":16.85,\"timestamp\":\"2013-10-30\"},{\"bullish\":79.29,\"bearish\":20.71,\"timestamp\":\"2013-10-29\"},{\"bullish\":80.61,\"bearish\":19.39,\"timestamp\":\"2013-10-28\"},{\"bullish\":80.52,\"bearish\":19.48,\"timestamp\":\"2013-10-27\"},{\"bullish\":85.67,\"bearish\":14.33,\"timestamp\":\"2013-10-26\"},{\"bullish\":86.35,\"bearish\":13.65,\"timestamp\":\"2013-10-25\"},{\"bullish\":86.51,\"bearish\":13.49,\"timestamp\":\"2013-10-24\"},{\"bullish\":84.87,\"bearish\":15.13,\"timestamp\":\"2013-10-23\"},{\"bullish\":85.63,\"bearish\":14.37,\"timestamp\":\"2013-10-22\"},{\"bullish\":87.46,\"bearish\":12.54,\"timestamp\":\"2013-10-21\"},{\"bullish\":86.62,\"bearish\":13.38,\"timestamp\":\"2013-10-20\"},{\"bullish\":86.8,\"bearish\":13.2,\"timestamp\":\"2013-10-19\"},{\"bullish\":78.97,\"bearish\":21.03,\"timestamp\":\"2013-10-18\"},{\"bullish\":65.29,\"bearish\":34.71,\"timestamp\":\"2013-10-17\"},{\"bullish\":57.14,\"bearish\":42.86,\"timestamp\":\"2013-10-16\"},{\"bullish\":59.69,\"bearish\":40.31,\"timestamp\":\"2013-10-15\"},{\"bullish\":59.2,\"bearish\":40.8,\"timestamp\":\"2013-10-14\"},{\"bullish\":61.07,\"bearish\":38.93,\"timestamp\":\"2013-10-13\"},{\"bullish\":64.83,\"bearish\":35.17,\"timestamp\":\"2013-10-12\"},{\"bullish\":64.58,\"bearish\":35.42,\"timestamp\":\"2013-10-11\"},{\"bullish\":66.23,\"bearish\":33.77,\"timestamp\":\"2013-10-10\"},{\"bullish\":74.29,\"bearish\":25.71,\"timestamp\":\"2013-10-09\"},{\"bullish\":81.56,\"bearish\":18.44,\"timestamp\":\"2013-10-08\"},{\"bullish\":81.74,\"bearish\":18.26,\"timestamp\":\"2013-10-07\"},{\"bullish\":81.36,\"bearish\":18.64,\"timestamp\":\"2013-10-06\"},{\"bullish\":77.6,\"bearish\":22.4,\"timestamp\":\"2013-10-05\"},{\"bullish\":77.27,\"bearish\":22.73,\"timestamp\":\"2013-10-04\"},{\"bullish\":74.83,\"bearish\":25.17,\"timestamp\":\"2013-10-03\"},{\"bullish\":71.22,\"bearish\":28.78,\"timestamp\":\"2013-10-02\"},{\"bullish\":66.2,\"bearish\":33.8,\"timestamp\":\"2013-10-01\"},{\"bullish\":63.78,\"bearish\":36.22,\"timestamp\":\"2013-09-30\"},{\"bullish\":67.18,\"bearish\":32.82,\"timestamp\":\"2013-09-29\"},{\"bullish\":67.14,\"bearish\":32.86,\"timestamp\":\"2013-09-28\"},{\"bullish\":70.2,\"bearish\":29.8,\"timestamp\":\"2013-09-27\"},{\"bullish\":75.15,\"bearish\":24.85,\"timestamp\":\"2013-09-26\"}]";
-		
-		List<VolumeData> data = processVolumeString(jsonString,"GOOG");
-		List<SentimentData> dataS = processSentimentString(sentimentString,"GOOG");
-		
-		
-		System.out.println(gson.toJson(data));
-		System.out.println(gson.toJson(dataS));
-		
+		String urls[] = {"http://stocktwits.com/symbol/GOOG?q=goog","http://stocktwits.com/symbol/AAPL?q=AAPL","http://stocktwits.com/symbol/GM?q=GM","http://stocktwits.com/symbol/TWTR?q=TWTR"};
+		String stocks[] = {"GOOG"};
+		grabStockData.init(urls, stocks);
 	}
+	
+	enum Path{
+		SENTIMENT,
+		VOLUME;
+	}
+	
+	public static void saveToFile(String data, String fileName,Path path){
+		
+		String root = null;
+		if(path.equals(Path.SENTIMENT)){
+			root = "resources//data//sentiments";
+		}else{
+			root = "resources//data//volume";
+		}
+
+		fileName=root+File.separator+fileName;
+	
+		try {
+			FileUtils.write(new File(fileName), data+"\n",true);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	
 	public static List<SentimentData> processSentimentString(String jsonSentimentString,String stock) {
 		// TODO Auto-generated method stub
@@ -59,30 +88,39 @@ public class GrabStockData {
 	}
 
 	public String getStringSource(String inputUrl) throws IOException{
-
-		BufferedWriter output;
 		URL url = new URL(inputUrl);
 		MicrosoftTagTypes.register();
 		MasonTagTypes.register();
 		Source source = new Source(new InputStreamReader(url.openStream()));
 		List<Element> scriptElements = source.getAllElements(HTMLElementName.SCRIPT);
-		Segment data = scriptElements.get(24).getContent(); //
-		return data.toString();
+		
+		for (int i = 0; i < scriptElements.size(); i++) {
+			String data = scriptElements.get(i).getContent().toString();
+			//need to check only
+			if(data.contains("var sentiment_data")){
+				return data;
+			}
+		}
+		return "";
 	}
 	
-	public void processData(String source){
+	public void processData(String source,String stock){
 			String[] lines = source.split(";");
-			
 			for (int i = 0; i < lines.length; i++) {
+				if(lines[i].contains("var sentiment_data")||lines[i].contains("var vol_data")){
+				String sentimentString = lines[i]; 
+//				System.out.println(lines[i]);
+				String jsonString = sentimentString.substring(sentimentString.indexOf("["),sentimentString.length());
 				if(lines[i].contains("var sentiment_data")){
-					String volumeString = lines[i]; 
-					String jsonVolumeSting = volumeString.substring(volumeString.indexOf("["),volumeString.length());
-					//process line
-					System.out.println(lines[i]);
+					List<SentimentData> results = processSentimentString(jsonString, stock);
+					saveToFile(gson.toJson(results), stock, Path.SENTIMENT);
+//					System.out.println(lines[i]);
 				}else if(lines[i].contains("var vol_data")){
-					//process data
+					List<VolumeData> results = processVolumeString(jsonString, stock);
+					saveToFile(gson.toJson(results), stock, Path.VOLUME);
 					System.out.println(lines[i]);
 				}
+			}
 			}
 	}	
 		

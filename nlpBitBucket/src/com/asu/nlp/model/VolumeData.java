@@ -37,5 +37,4 @@ public class VolumeData{
 		String volume_score;
 		String volume_change;
 		
-		
 	}
