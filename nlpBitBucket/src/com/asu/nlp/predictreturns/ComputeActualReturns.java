@@ -36,9 +36,6 @@ public class ComputeActualReturns {
 		int i = 0, j = 0; // assuming both will start from same date- for now
 							// data is like that
 
-		stockReturnModels.add(new StockReturnModel(null, null,
-				stockData.get(0), senticments.get(0)));
-
 		if (stockData.size() != senticments.size()) {
 			System.out
 					.println("Note Sentiment and Stock Data is only computed for the days when stock market is open");
@@ -47,22 +44,24 @@ public class ComputeActualReturns {
 		Double adjClose_t = null;
 		Double adjClose_t_1 = null;
 		Double actualReturns = null;
-		i=1;
-		j=1;
+		i=0;
+		j=0;
 		for (; i < senticments.size() && j < stockData.size();) {
 
 			Integer compare = Utils.compare(senticments.get(i).getDate(), stockData.get(j).getDate());
 			//if equal
-			System.out.println(senticments.get(i).getDate());
-			System.out.println(stockData.get(j).getDate());
 			if (compare == 0) {
 				StockReturnModel stockReturnModel = new StockReturnModel(null,
 						null, stockData.get(j), senticments.get(i));
+				
+				if(j!=0){
 				adjClose_t = Double.parseDouble(stockData.get(j).getAdjClose());
 				adjClose_t_1 = Double.parseDouble(stockData.get(j - 1)
 						.getAdjClose()); // i-1
 				actualReturns = Math.log(adjClose_t) - Math.log(adjClose_t_1);
 				stockReturnModel.setActualReturns(actualReturns);
+				}
+				
 				stockReturnModels.add(stockReturnModel);
 				
 				if(i < senticments.size())
