@@ -1,6 +1,6 @@
 package com.asu.nlp.model;
 
-public class StockIndex {
+public class StockValue {
 	String date;
 	String open;
 	String high;
@@ -17,7 +17,7 @@ public class StockIndex {
 				+ ", low=" + low + ", close=" + close + ", volume=" + volume
 				+ ", adjClose=" + adjClose + "]";
 	}
-	public StockIndex(String date, String open, String high, String low,
+	public StockValue(String date, String open, String high, String low,
 			String close, String volume, String adjClose) {
 		super();
 		this.date = date;

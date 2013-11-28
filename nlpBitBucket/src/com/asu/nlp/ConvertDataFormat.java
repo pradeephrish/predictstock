@@ -26,16 +26,15 @@ public class ConvertDataFormat {
 	public static GsonBuilder gsonBuilder = new GsonBuilder(); 
 	public static Gson gson = gsonBuilder.create(); 
 	
-	public void init(String urls[]){
-		for (int i = 0; i < urls.length; i++) {
-			formatFromJSON(urls[i]);
+	public void init(String stocks[]){
+		for (int i = 0; i < stocks.length; i++) {
+			formatFromJSON(stocks[i]);
 		}
 	}
 	
 	
-	public void formatFromJSON(String url){
-
-		String stock = url.substring(url.lastIndexOf("/")+1,url.lastIndexOf("?"));	
+	public void formatFromJSON(String stock){
+	
 		String rootS ="resources//data//sentiments";
 		String rootV ="resources//data//volume";
 		try {
@@ -68,9 +67,9 @@ public class ConvertDataFormat {
 	}
 	public static void main(String[] args) {
 		
-		String urls[] = {"http://stocktwits.com/symbol/GOOG?q=goog","http://stocktwits.com/symbol/AAPL?q=AAPL","http://stocktwits.com/symbol/GM?q=GM","http://stocktwits.com/symbol/TWTR?q=TWTR"};
+		String stocks[] = {"GOOG","AAPL","GM","TWTR"};
 		ConvertDataFormat convertDataFormat =new ConvertDataFormat();
-		convertDataFormat.init(urls);
+		convertDataFormat.init(stocks);
 		
 	}
 }
