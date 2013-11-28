@@ -51,8 +51,9 @@ public class ComputeActualReturns {
 							// data is like that
 
 		if (stockData.size() != senticments.size()) {
-			System.out
-					.println("Note Sentiment and Stock Data is only computed for the days when stock market is open");
+			//hide sysout - should be handled using verbose/debug mode
+			
+//			System.out.println("Note Sentiment and Stock Data is only computed for the days when stock market is open");
 		}
 
 		Double adjClose_t = null;

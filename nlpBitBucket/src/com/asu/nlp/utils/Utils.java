@@ -75,22 +75,22 @@ public class Utils {
 		return null;
 	}
 
-	public SimpleRegression executeBaseLineModel(double[][] data) {
+	public static SimpleRegression executeBaseLineModel(double[][] data) {
 		SimpleRegression regression = new SimpleRegression();
 		regression.addData(data);
-		System.out.println(regression.getIntercept());
+//		System.out.println(regression.getIntercept());
 		// displays intercept of regression line
 
-		System.out.println(regression.getSlope());
+//		System.out.println(regression.getSlope());
 		// displays slope of regression line
 
-		System.out.println(regression.getSlopeStdErr());
+//		System.out.println(regression.getSlopeStdErr());
 		// displays slope standard error
 
 		return regression;
 	}
 
-	public MultipleLinearRegression executeMultiLiniearRegression(double[] y,
+	public static MultipleLinearRegression executeMultiLiniearRegression(double[] y,
 			double[][] x) {
 		OLSMultipleLinearRegression regression = new OLSMultipleLinearRegression();
 		regression.newSampleData(y, x);
