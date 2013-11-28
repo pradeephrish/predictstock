@@ -2,11 +2,11 @@ package com.asu.nlp.model;
 
 public class StockReturnModel {
 	Double actualReturns;
-	Double predictedReturns; //while computing actual returns, this will be null
+	PredictedResult predictedReturns; //while computing actual returns, this will be null
 	StockValue stockDetails;
 	SentimentReturnFeature sentimentReturnFeature;
 	
-	public StockReturnModel(Double actualReturns, Double predictedReturns,
+	public StockReturnModel(Double actualReturns, PredictedResult predictedReturns,
 			StockValue stockDetails,
 			SentimentReturnFeature sentimentReturnFeature) {
 		super();
@@ -30,10 +30,10 @@ public class StockReturnModel {
 	public void setActualReturns(Double actualReturns) {
 		this.actualReturns = actualReturns;
 	}
-	public Double getPredictedReturns() {
+	public PredictedResult getPredictedReturns() {
 		return predictedReturns;
 	}
-	public void setPredictedReturns(Double predictedReturns) {
+	public void setPredictedReturns(PredictedResult predictedReturns) {
 		this.predictedReturns = predictedReturns;
 	}
 	public StockValue getStockDetails() {

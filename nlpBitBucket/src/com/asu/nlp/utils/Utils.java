@@ -8,6 +8,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.math3.stat.regression.MultipleLinearRegression;
+import org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression;
+import org.apache.commons.math3.stat.regression.SimpleRegression;
 
 import com.asu.nlp.model.SentimentData;
 import com.asu.nlp.model.VolumeData;
@@ -65,4 +68,35 @@ public class Utils {
 		
 		return null;
 	}
+	
+	public SimpleRegression executeBaseLineModel(double[][] data){
+		SimpleRegression regression = new SimpleRegression();
+		regression.addData(data);
+		System.out.println(regression.getIntercept());
+		// displays intercept of regression line
+
+		System.out.println(regression.getSlope());
+		// displays slope of regression line
+
+		System.out.println(regression.getSlopeStdErr());
+		// displays slope standard error
+		
+		return regression;
+	}
+	
+	public MultipleLinearRegression executeMultiLiniearRegression(double[] y,double[][] x){
+		OLSMultipleLinearRegression regression = new OLSMultipleLinearRegression();
+		regression.newSampleData(y, x);
+		double[] beta = regression.estimateRegressionParameters();       
+		double[] residuals = regression.estimateResiduals();
+		double[][] parametersVariance = regression.estimateRegressionParametersVariance();
+		double regressandVariance = regression.estimateRegressandVariance();
+		double rSquared = regression.calculateRSquared();
+		double sigma = regression.estimateRegressionStandardError();
+		
+		return regression;
+	}
+	
+	
+	
 }
