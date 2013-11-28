@@ -9,6 +9,15 @@ public class PredictedResult {
 		this.result = result;
 		this.modelName = modelName;
 	}
+	
+	
+	@Override
+	public String toString() {
+		return "PredictedResult [result=" + result + ", modelName=" + modelName
+				+ "]";
+	}
+
+
 	public Double getResult() {
 		return result;
 	}

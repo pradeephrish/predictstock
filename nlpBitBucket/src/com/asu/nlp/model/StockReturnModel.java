@@ -1,6 +1,8 @@
 package com.asu.nlp.model;
 
-public class StockReturnModel {
+import com.asu.nlp.interfaces.DateInterface;
+
+public class StockReturnModel implements DateInterface {
 	Double actualReturns;
 	PredictedResult predictedReturns; //while computing actual returns, this will be null
 	StockValue stockDetails;
@@ -48,6 +50,12 @@ public class StockReturnModel {
 	public void setSentimentReturnFeature(
 			SentimentReturnFeature sentimentReturnFeature) {
 		this.sentimentReturnFeature = sentimentReturnFeature;
+	}
+
+	@Override
+	public String getStockDate() {
+		// TODO Auto-generated method stub
+		return this.stockDetails.getDate();
 	}
 	
 	

@@ -1,6 +1,8 @@
 package com.asu.nlp.model;
 
-public class StockValue {
+import com.asu.nlp.interfaces.DateInterface;
+
+public class StockValue implements DateInterface {
 	String date;
 	String open;
 	String high;
@@ -71,6 +73,11 @@ public class StockValue {
 	}
 	public void setAdjClose(String adjClose) {
 		this.adjClose = adjClose;
+	}
+	@Override
+	public String getStockDate() {
+		// TODO Auto-generated method stub
+		return getDate();
 	}
 
 }

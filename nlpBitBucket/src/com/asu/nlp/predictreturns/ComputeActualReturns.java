@@ -1,6 +1,7 @@
 package com.asu.nlp.predictreturns;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,6 +29,19 @@ public class ComputeActualReturns {
 		List<SentimentReturnFeature> senticments = ComputeReturnFeatures
 				.getSentimentReturnFeatures(stock);
 		List<StockValue> stockData = GrabStockPriceIndex.getStockData(stock);
+		
+		//note data is in reverse time order, we need  to predict t from t-1,  reverse both list
+		//IMP
+		Collections.reverse(senticments);
+		Collections.reverse(stockData);
+		
+		if(!Utils.isAscendingOrder(senticments)&&!Utils.isAscendingOrder(stockData)){
+			System.out.println("Error: Descending order found, Please reverse data");
+			return null;
+		}
+		
+		
+		
 
 		// size must be same
 
@@ -72,14 +86,14 @@ public class ComputeActualReturns {
 			}else{
 				if(compare == -1){ //first value is less
 					
-					//note dates are in reverse order
+					if(i < senticments.size())
+						++i;
+					
+				}else{    //else second value is big
 					
 					if(j < stockData.size())
 						++j;
 					
-				}else{    //else second value is big
-					if(i < senticments.size())
-						++i;
 				}
 			}
 		}

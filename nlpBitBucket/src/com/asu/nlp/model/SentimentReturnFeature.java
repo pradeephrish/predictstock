@@ -1,6 +1,8 @@
 package com.asu.nlp.model;
 
-public class SentimentReturnFeature {
+import com.asu.nlp.interfaces.DateInterface;
+
+public class SentimentReturnFeature  implements DateInterface{
 	private Double bind; //Bullishness Index
 	private Double TIS; //Twitter Investment Sentiment
 	private String date; //date is kept as string to compare fast using map
@@ -35,6 +37,12 @@ public class SentimentReturnFeature {
 	}
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	@Override
+	public String getStockDate() {
+		// TODO Auto-generated method stub
+		return getDate();
 	}
 	
 	
