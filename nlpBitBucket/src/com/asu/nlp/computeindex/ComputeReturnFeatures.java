@@ -19,7 +19,7 @@ public class ComputeReturnFeatures {
 		}
 	}
 	
-	public List<SentimentReturnFeature> getSentimentReturnFeatures(String stockSymbol){
+	public  static List<SentimentReturnFeature> getSentimentReturnFeatures(String stockSymbol){
 		//read data from file, assuming all files will have same time span for data
 		List<SentimentData> data = Utils.getSentiment(stockSymbol);
 		

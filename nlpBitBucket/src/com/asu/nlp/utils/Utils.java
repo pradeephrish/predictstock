@@ -2,6 +2,9 @@ package com.asu.nlp.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -43,4 +46,23 @@ public class Utils {
 		return gson.fromJson(dataV, new TypeToken<List<VolumeData>>(){}.getType());
 	}
 	
+	public static Integer compare(String firstDate,String secondDate){
+		//the value 0 if the argument Date is equal to this Date; a value less than 0 if this Date is before the Date argument; and a value greater than 0 if this Date is after the Date argument. 
+	
+		
+		SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		try {
+			Date first = myFormat.parse(firstDate.replace("\"", ""));
+			Date second = myFormat.parse(secondDate.replace("\"", ""));
+			
+			return first.compareTo(second);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 }

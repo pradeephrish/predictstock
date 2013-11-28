@@ -14,7 +14,7 @@ import com.asu.nlp.model.StockValue;
 public class GrabStockPriceIndex {
 	//no need to fetch, saved csv in data/stockindex
 	
-	public List <StockValue> loadData(String stockQuote){
+	public static List <StockValue> getStockData(String stockQuote){
 		String path = "resources//data//stockindex//"+stockQuote+".csv"; 
 		List<StockValue> stockList = new ArrayList<StockValue>();
 		try {
@@ -39,7 +39,7 @@ public class GrabStockPriceIndex {
 	
 	public static void main(String[] args) {
 		GrabStockPriceIndex grabStockPriceIndex  = new GrabStockPriceIndex();
-		List<StockValue> data = grabStockPriceIndex.loadData("GOOG");
+		List<StockValue> data = grabStockPriceIndex.getStockData("GOOG");
 		for (int i = 0; i < data.size(); i++) {
 			System.out.println(data.get(i).toString());
 		}

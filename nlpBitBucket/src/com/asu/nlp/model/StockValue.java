@@ -11,6 +11,8 @@ public class StockValue {
 	
 	
 	
+	
+	
 	@Override
 	public String toString() {
 		return "StockIndex [date=" + date + ", open=" + open + ", high=" + high
