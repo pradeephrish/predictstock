@@ -1,9 +1,7 @@
 package com.asu.nlp.predictreturns;
 
-import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.math3.stat.regression.MultipleLinearRegression;
 import org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 
