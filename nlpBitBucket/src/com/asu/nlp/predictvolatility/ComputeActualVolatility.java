@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.asu.nlp.GrabStockPriceIndex;
 import com.asu.nlp.model.StockValue;
 import com.asu.nlp.model.VolatilityReturnModel;
+import com.asu.nlp.model.VolumeData;
 import com.asu.nlp.utils.Utils;
 
 public class ComputeActualVolatility {
@@ -16,6 +18,8 @@ public class ComputeActualVolatility {
 	public static List<VolatilityReturnModel> getActualVolatility(String stock){
 		
 		List<VolatilityReturnModel> volatilityModels = new ArrayList<VolatilityReturnModel>();
+		
+		Map<String, VolumeData> volumeMap = Utils.getVolumeDataMap(stock);
 
 		List<StockValue> stockData = GrabStockPriceIndex.getStockData(stock);
 		
@@ -44,9 +48,8 @@ public class ComputeActualVolatility {
 			}else{
 				volatility = Math.log(volatility);
 			}
-				
-			
-			VolatilityReturnModel volatilityReturnModel = new VolatilityReturnModel(volatility, null, stockData.get(i));
+			VolumeData vData = volumeMap.get("\""+stockData.get(i).getStockDate()+"\"");
+			VolatilityReturnModel volatilityReturnModel = new VolatilityReturnModel(volatility, null, stockData.get(i),vData);
 			volatilityModels.add(volatilityReturnModel);
 		}
 		

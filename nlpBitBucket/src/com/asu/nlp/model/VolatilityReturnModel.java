@@ -6,15 +6,25 @@ public class VolatilityReturnModel implements DateInterface {
 	Double actualVolatility;
 	PredictedResult predictedResult;
 	StockValue stockValue;
+	VolumeData volumeData;
 	
 	
 	
+	public VolumeData getVolumeData() {
+		return volumeData;
+	}
+
+	public void setVolumeData(VolumeData volumeData) {
+		this.volumeData = volumeData;
+	}
+
 	public VolatilityReturnModel(Double actualVolatility,
-			PredictedResult predictedResult, StockValue stockValue) {
+			PredictedResult predictedResult, StockValue stockValue,VolumeData volumeData) {
 		super();
 		this.actualVolatility = actualVolatility;
 		this.predictedResult = predictedResult;
 		this.stockValue = stockValue;
+		this.volumeData=volumeData;
 	}
 
 	@Override
@@ -51,9 +61,7 @@ public class VolatilityReturnModel implements DateInterface {
 	public String toString() {
 		return "VolatilityReturnModel [actualVolatility=" + actualVolatility
 				+ ", predictedResult=" + predictedResult + ", stockValue="
-				+ stockValue + "]";
-	}
-	
-	
+				+ stockValue + ", volumeData=" + volumeData + "]";
+	}	
 	
 }

@@ -4,9 +4,8 @@ import java.util.List;
 
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 
-import com.asu.nlp.model.StockReturnModel;
+import com.asu.nlp.model.StockValue;
 import com.asu.nlp.model.VolatilityReturnModel;
-import com.asu.nlp.predictreturns.ComputeActualReturns;
 import com.asu.nlp.utils.Utils;
 
 public class PredictVolatility {
@@ -27,6 +26,24 @@ public class PredictVolatility {
 		
 		System.out.println("M1\t\t"+stock +"\t\t"+Math.sqrt(regression.getMeanSquareError()*100));
 	}
+	
+	
+	//ln (ˆσt) = f(ln (σt−1)) (baseline)
+		private void predictUsingMultiLinear1(List<VolatilityReturnModel> input,String stock){
+			double y[] = new double[input.size()-1];
+			double x[][] = new double[input.size()-1][2];
+			if(!Utils.isAscendingOrder(input)){
+				System.out.println("Error: Descending order found, Please reverse data");
+				return;
+			}
+			for (int i = 0,index=1; i < input.size()-1; i++,index++) {
+				y[i]=input.get(index).getActualVolatility(); // y value at t;
+//				x[i][0]=input.get(index-1).getActualVolatility(); // x1 value at t-1 
+//				x[i][1]=
+			}
+			//data is ready
+		}
+	
 	
 	public void runBaseLine(String stock){
 		List<VolatilityReturnModel> vReturns = ComputeActualVolatility.getActualVolatility(stock);

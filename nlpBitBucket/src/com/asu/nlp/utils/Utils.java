@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.math3.stat.regression.MultipleLinearRegression;
@@ -38,7 +40,16 @@ public class Utils {
 
 	}
 
-	public static List<SentimentData> getVolume(String stock) {
+	public static Map<String,VolumeData> getVolumeDataMap(String stock){
+		List<VolumeData> volume = getVolume(stock);
+		Map<String, VolumeData> volumeMap = new HashMap<String, VolumeData>(); //Date vs VolumeData
+		for (int i = 0; i < volume.size(); i++) {
+			volumeMap.put(volume.get(i).getTimestamp(), volume.get(i));
+		}
+		return volumeMap;
+	}
+	
+	public static List<VolumeData> getVolume(String stock) {
 		String rootV = "resources//data//volume";
 		String fileNameV = rootV + File.separator + stock;
 		String dataV = null;
@@ -131,5 +142,10 @@ public class Utils {
 			sum+=array[i];
 		}
 		return sum/array.length;
+	}
+	
+	public static void main(String[] args) {
+		Map<String, VolumeData> map = getVolumeDataMap("GOOG");
+		System.out.println("map");
 	}
 }
