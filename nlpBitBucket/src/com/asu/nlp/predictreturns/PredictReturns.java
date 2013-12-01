@@ -136,7 +136,7 @@ public class PredictReturns {
 	
 	
 	public void test(){
-		System.out.println("Baseline - M1");
+		System.out.println("Returns Baseline - M1");
 		System.out.println();
 		System.out.println("Model\t\tStock\t\tRMSE(%)");
 		this.runBaseLine("GOOG");
@@ -144,12 +144,17 @@ public class PredictReturns {
 		this.runBaseLine("GM");
 		this.runBaseLine("TWTR");
 		System.out.println();
-		System.out.println("Multilinear - M2");
+		System.out.println("Returns Multilinear - M2");
+		System.out.println();
+		System.out.println("Model\t\tStock\t\tRMSE(%)");
 		this.runMutlilinearModel1("GOOG");
 		this.runMutlilinearModel1("AAPL");
 		this.runMutlilinearModel1("GM");
 		this.runMutlilinearModel1("TWTR");
-		System.out.println("Multilinear - M3");
+		System.out.println();
+		System.out.println("Returns Multilinear - M3");
+		System.out.println();
+		System.out.println("Model\t\tStock\t\tRMSE(%)");
 		this.runMutlilinearModel2("GOOG");
 		this.runMutlilinearModel2("AAPL");
 		this.runMutlilinearModel2("GM");
